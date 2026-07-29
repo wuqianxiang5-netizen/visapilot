@@ -2000,9 +2000,9 @@ a:hover { text-decoration: underline; }
   </div>
 </div>
 
-<!-- ===== 内联脚本 ===== -->
+<!-- ===== script inline ===== -->
 <script>
-/* ===== data.js ===== */
+/* data.js */
 /**
  * VisaPilot — 数据层
  * 包含所有国家、签证类型、签证中心、城市/行程数据
@@ -2063,7 +2063,7 @@ const VISAPILOT = (function() {
         { city:'深圳', addr:'深圳市福田区滨河大道9285号', system:'gov.uk/TLScontact' },
         { city:'杭州', addr:'杭州市上城区解放东路8号', system:'gov.uk/TLScontact' },
       ],
-      feeNote:'¥900-¥1500（根据签证类型，含服务费）',
+      feeNote:'¥1,000-¥1,800（根据签证类型，含服务费）',
       baseFees: { '旅游':1200,'商务':1200,'学生(T4)':900,'工作':1500,'过境':1000,'长期签证':1800 }
     },
 
@@ -2078,7 +2078,7 @@ const VISAPILOT = (function() {
         { city:'武汉', addr:'武汉市武昌区中北路171号', system:'France-Visas' },
         { city:'沈阳', addr:'沈阳市和平区青年大街288号', system:'France-Visas' },
       ],
-      feeNote:'€80+服务费 ≈ ¥620-900（申根统一费率）',
+      feeNote:'€90+服务费 ≈ ¥650-950（申根统一费率）',
       baseFees: { '旅游':800,'商务':800,'学生':620,'工作':1500,'过境':800 }
     },
     italy: {
@@ -2090,7 +2090,7 @@ const VISAPILOT = (function() {
         { city:'广州', addr:'广州市天河区体育西路189号', system:'VFS Global' },
         { city:'重庆', addr:'重庆市渝中区邹容路68号', system:'VFS Global' },
       ],
-      feeNote:'€80+服务费 ≈ ¥620-900',
+      feeNote:'€90+服务费 ≈ ¥650-950',
       baseFees: { '旅游':800,'商务':800,'学生':620,'工作':1500,'过境':800 }
     },
     spain: {
@@ -2101,7 +2101,7 @@ const VISAPILOT = (function() {
         { city:'上海', addr:'上海市浦东新区世纪大道88号', system:'BLS International' },
         { city:'广州', addr:'广州市天河区华夏路8号', system:'BLS International' },
       ],
-      feeNote:'€80+服务费 ≈ ¥620-900',
+      feeNote:'€90+服务费 ≈ ¥650-950',
       baseFees: { '旅游':800,'商务':800,'学生':620,'工作':1500,'过境':800 }
     },
     germany: {
@@ -2114,7 +2114,7 @@ const VISAPILOT = (function() {
         { city:'成都', addr:'成都市锦江区东御街18号', system:'TLScontact' },
         { city:'沈阳', addr:'沈阳市和平区青年大街288号', system:'TLScontact' },
       ],
-      feeNote:'€80+服务费 ≈ ¥620-900',
+      feeNote:'€90+服务费 ≈ ¥650-950',
       baseFees: { '旅游':800,'商务':800,'学生':620,'工作':1500,'过境':800 }
     },
     netherlands: {
@@ -2125,7 +2125,7 @@ const VISAPILOT = (function() {
         { city:'上海', addr:'上海市静安区恒丰路329号', system:'VFS Global' },
         { city:'广州', addr:'广州市天河区体育西路189号', system:'VFS Global' },
       ],
-      feeNote:'€80+服务费 ≈ ¥620-900',
+      feeNote:'€90+服务费 ≈ ¥650-950',
       baseFees: { '旅游':800,'商务':800,'学生':620,'工作':1500,'过境':800 }
     },
     switzerland: {
@@ -2136,7 +2136,7 @@ const VISAPILOT = (function() {
         { city:'上海', addr:'上海市静安区恒丰路329号', system:'TLScontact' },
         { city:'广州', addr:'广州市天河区体育西路189号', system:'TLScontact' },
       ],
-      feeNote:'€80+服务费 ≈ ¥620-900',
+      feeNote:'€90+服务费 ≈ ¥650-950',
       baseFees: { '旅游':800,'商务':800,'学生':620,'工作':1500,'过境':800 }
     },
     singapore: {
@@ -2147,7 +2147,7 @@ const VISAPILOT = (function() {
         { city:'上海', addr:'上海市万山路89号', system:'新加坡驻上海总领事馆' },
         { city:'广州', addr:'广州市天河北路233号', system:'新加坡驻广州总领事馆' },
       ],
-      feeNote:'单次¥200，多次¥350',
+      feeNote:'电子签S$30≈¥160，多次签S$90≈¥480',
       baseFees: { '旅游':200,'商务':350,'学生':250,'工作':500,'过境':200 }
     },
     thailand: {
@@ -2196,7 +2196,7 @@ const VISAPILOT = (function() {
         { city:'武汉', addr:'武汉市武昌区中北路171号', system:'VFS Global' },
         { city:'沈阳', addr:'沈阳市和平区青年大街288号', system:'TLScontact' },
       ],
-      feeNote:'€80+服务费 ≈ ¥620-¥900',
+      feeNote:'€90+服务费 ≈ ¥650-¥950',
       baseFees: { '旅游':800,'商务':800,'学生':620,'探亲访友':800,'文化体育':800 }
     },
     japan: {
@@ -2228,8 +2228,8 @@ const VISAPILOT = (function() {
         { city:'北京', addr:'北京市朝阳区亮马桥路50号', system:'印度驻华大使馆' },
         { city:'上海', addr:'上海市延安西路2200号', system:'印度驻上海总领事馆' },
       ],
-      feeNote:'电子签$25起（约¥180），纸质签¥500起',
-      baseFees: { '旅游':180,'商务':500,'学生':300,'工作':800,'医疗':180 }
+      feeNote:'电子签$40起≈¥290，纸质签¥500起（含服务费）',
+      baseFees: { '旅游':290,'商务':500,'学生':300,'工作':800,'医疗':180 }
     },
     australia: {
       name: '澳大利亚', flag: '🇦🇺',
@@ -2239,8 +2239,8 @@ const VISAPILOT = (function() {
         { city:'上海', addr:'上海市南京西路1376号', system:'澳洲移民局(AVS)' },
         { city:'广州', addr:'广州市天河区珠江新城华夏路8号', system:'澳洲移民局(AVS)' },
       ],
-      feeNote:'AUD$150起（约¥700），学生签¥500',
-      baseFees: { '旅游':700,'商务':700,'学生':500,'工作':2000,'过境':700,'长期签证':2500 }
+      feeNote:'AUD$150起（约¥700），学生签¥1,200起',
+      baseFees: { '旅游':700,'商务':700,'学生':1200,'工作':2000,'过境':700,'长期签证':2500 }
     },
     canada: {
       name: '加拿大', flag: '🇨🇦',
@@ -2250,8 +2250,8 @@ const VISAPILOT = (function() {
         { city:'上海', addr:'上海市黄浦区四川中路213号', system:'IRCC/VFS' },
         { city:'广州', addr:'广州市天河区体育西路189号', system:'IRCC/VFS' },
       ],
-      feeNote:'CAD$100起（约¥520），学生签¥420',
-      baseFees: { '旅游':520,'商务':520,'学生':420,'工作':850,'过境':520 }
+      feeNote:'CAD$100+生物识别CAD$85≈¥1,000起，学生签¥900起',
+      baseFees: { '旅游':520,'商务':520,'学生':900,'工作':1200,'过境':520 }
     },
     ireland: {
       name: '爱尔兰', flag: '🇮🇪',
@@ -2260,7 +2260,7 @@ const VISAPILOT = (function() {
         { city:'北京', addr:'北京市朝阳区亮马桥路50号', system:'VFS Global' },
         { city:'上海', addr:'上海市静安区恒丰路329号', system:'VFS Global' },
       ],
-      feeNote:'€80约¥620，学生签¥500',
+      feeNote:'€90约¥700，学生签¥1200',
       baseFees: { '旅游':620,'商务':620,'学生':500,'工作':1200,'过境':620,'长期签证':1500 }
     },
     philippines: {
@@ -2270,7 +2270,7 @@ const VISAPILOT = (function() {
         { city:'北京', addr:'北京市朝阳区建国门外秀水北街23号', system:'菲律宾驻华大使馆' },
         { city:'上海', addr:'上海市长宁区延安西路1160号', system:'菲律宾驻上海总领事馆' },
       ],
-      feeNote:'约¥200，加急¥400',
+      feeNote:'贴纸签约¥200，加急¥400',
       baseFees: { '旅游':200,'商务':200 }
     },
   };
@@ -2406,9 +2406,9 @@ const VISAPILOT = (function() {
     { q:'美签好签吗？', a:'美国签证(B1/B2)需要面签，签证官会当面询问。通过率约70-85%，建议准备充分的赴美理由和国内约束力证明。DS-160表如实填写很重要。' },
     { q:'申根签选哪个国家？', a:'行程中停留时间最长的国家作为申请国。如果各国停留时间相近，选择首入国。法国、意大利、西班牙出签较快（10-15天）。第一次申根建议选择法国或意大利。' },
     { q:'英签好签吗？', a:'英国签证需到签证中心录指纹，无需面签。通过率约85-95%。材料完备是关键，尤其银行流水和在职证明。标准审理15个工作日，加急5个工作日。' },
-    { q:'签证费用多少？', a:'美签约¥1200-1600，英签¥900-1500，申根€80+服务费≈¥620-900，日本单次¥200，韩国单次¥280，澳洲AUD$150起≈¥700。均不含服务费。' },
+    { q:'签证费用多少？', a:'美签约¥1200-1600，英签¥900-1500，申根€90+服务费≈¥650-950，日本单次¥200，韩国单次¥280，澳洲AUD$150起≈¥700。均不含服务费。' },
     { q:'拒签了怎么办？', a:'分析拒签原因（通常是资金不足/材料不全/移民倾向），补充材料后可重新申请。建议间隔1-3个月再申请。部分国家允许申诉。可咨询VisaPilot代办获取专业建议。' },
-    { q:'办理周期多久？', a:'一般5-15个工作日。加急服务：美签加急¥500，英签加急¥300，申根加急¥200。旺季审理时间可能延长50%。' },
+    { q:'办理周期多久？', a:'一般5-15个工作日。加急服务依使领馆规定（约¥200-500）。旺季审理时间可能延长50%。' },
     { q:'首次办签流程？', a:'确定目的国→准备材料→填写申请表→预约递交→前往签证中心→采集指纹→等待审核→领取护照。建议至少提前2个月开始准备。' },
     { q:'未成年人签证？', a:'未成年人需父母双方/监护人陪同办理。需提供出生证明、父母同意书(如一方不陪同)、父母身份证件、学校在读证明。部分国家要求公证。' },
     { q:'签证中心在哪里？', a:'主要签证中心分布在北京、上海、广州、成都等大城市。部分国家在沈阳、武汉、深圳、杭州也有签证中心。具体地址可在本平台每个国家详情页查看。' },
@@ -2551,11 +2551,45 @@ const VISAPILOT = (function() {
     { name:'太平洋保险', tag:'境外旅行险', url:'https://www.cpic.com.cn/', icon:'🔵', color:'#0072c6' },
   ];
 
+  // Schengen country info with embassy links
+  const SCHENGEN_COUNTRY_INFO = {
+    fra: { name:'法国', flag:'\uD83C\uDDEB\uD83C\uDDF7', standalone:true, embassy:'https://www.google.com/search?q=France+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou/Chengdu/Wuhan/Shenyang' },
+    ita: { name:'意大利', flag:'\uD83C\uDDEE\uD83C\uDDF9', standalone:true, embassy:'https://www.google.com/search?q=Italy+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou/Chongqing' },
+    esp: { name:'西班牙', flag:'\uD83C\uDDEA\uD83C\uDDF8', standalone:true, embassy:'https://www.google.com/search?q=Spain+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou' },
+    deu: { name:'德国', flag:'\uD83C\uDDE9\uD83C\uDDEA', standalone:true, embassy:'https://www.google.com/search?q=Germany+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou/Chengdu/Shenyang' },
+    che: { name:'瑞士', flag:'\uD83C\uDDE8\uD83C\uDDED', standalone:true, embassy:'https://www.google.com/search?q=Switzerland+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou' },
+    nld: { name:'荷兰', flag:'\uD83C\uDDF3\uD83C\uDDF1', standalone:true, embassy:'https://www.google.com/search?q=Netherlands+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou' },
+    bel: { name:'比利时', flag:'\uD83C\uDDE7\uD83C\uDDEA', standalone:false, embassy:'https://www.google.com/search?q=Belgium+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou' },
+    lux: { name:'卢森堡', flag:'\uD83C\uDDF1\uD83C\uDDFA', standalone:false, embassy:'https://www.google.com/search?q=Luxembourg+embassy+visa+China', city:'Beijing' },
+    aut: { name:'奥地利', flag:'\uD83C\uDDE6\uD83C\uDDF9', standalone:false, embassy:'https://www.google.com/search?q=Austria+embassy+visa+China', city:'Beijing/Shanghai' },
+    prt: { name:'葡萄牙', flag:'\uD83C\uDDF5\uD83C\uDDF9', standalone:false, embassy:'https://www.google.com/search?q=Portugal+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou' },
+    grc: { name:'希腊', flag:'\uD83C\uDDEC\uD83C\uDDF7', standalone:false, embassy:'https://www.google.com/search?q=Greece+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou' },
+    swe: { name:'瑞典', flag:'\uD83C\uDDF8\uD83C\uDDEA', standalone:false, embassy:'https://www.google.com/search?q=Sweden+embassy+visa+China', city:'Beijing/Shanghai' },
+    dnk: { name:'丹麦', flag:'\uD83C\uDDE9\uD83C\uDDF0', standalone:false, embassy:'https://www.google.com/search?q=Denmark+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou' },
+    fin: { name:'芬兰', flag:'\uD83C\uDDEB\uD83C\uDDEE', standalone:false, embassy:'https://www.google.com/search?q=Finland+embassy+visa+China', city:'Beijing/Shanghai' },
+    nor: { name:'挪威', flag:'\uD83C\uDDF3\uD83C\uDDF4', standalone:false, embassy:'https://www.google.com/search?q=Norway+embassy+visa+China', city:'Beijing/Shanghai' },
+    isl: { name:'冰岛', flag:'\uD83C\uDDEE\uD83C\uDDF8', standalone:false, embassy:'https://www.google.com/search?q=Iceland+embassy+visa+China', city:'Beijing/Shanghai' },
+    cze: { name:'捷克', flag:'\uD83C\uDDE8\uD83C\uDDFF', standalone:false, embassy:'https://www.google.com/search?q=Czech+embassy+visa+China', city:'Beijing/Shanghai' },
+    hun: { name:'匈牙利', flag:'\uD83C\uDDED\uD83C\uDDFA', standalone:false, embassy:'https://www.google.com/search?q=Hungary+embassy+visa+China', city:'Beijing/Shanghai/Chongqing' },
+    pol: { name:'波兰', flag:'\uD83C\uDDF5\uD83C\uDDF1', standalone:false, embassy:'https://www.google.com/search?q=Poland+embassy+visa+China', city:'Beijing/Shanghai/Guangzhou' },
+    svk: { name:'斯洛伐克', flag:'\uD83C\uDDF8\uD83C\uDDF0', standalone:false, embassy:'https://www.google.com/search?q=Slovakia+embassy+visa+China', city:'Beijing' },
+    svn: { name:'斯洛文尼亚', flag:'\uD83C\uDDF8\uD83C\uDDEE', standalone:false, embassy:'https://www.google.com/search?q=Slovenia+embassy+visa+China', city:'Beijing' },
+    hrv: { name:'克罗地亚', flag:'\uD83C\uDDED\uD83C\uDDF7', standalone:false, embassy:'https://www.google.com/search?q=Croatia+embassy+visa+China', city:'Beijing/Shanghai' },
+    est: { name:'爱沙尼亚', flag:'\uD83C\uDDEA\uD83C\uDDEA', standalone:false, embassy:'https://www.google.com/search?q=Estonia+embassy+visa+China', city:'Beijing/Shanghai' },
+    lva: { name:'拉脱维亚', flag:'\uD83C\uDDF1\uD83C\uDDFB', standalone:false, embassy:'https://www.google.com/search?q=Latvia+embassy+visa+China', city:'Beijing' },
+    ltu: { name:'立陶宛', flag:'\uD83C\uDDF1\uD83C\uDDF9', standalone:false, embassy:'https://www.google.com/search?q=Lithuania+embassy+visa+China', city:'Beijing' },
+    mlt: { name:'马耳他', flag:'\uD83C\uDDF2\uD83C\uDDF9', standalone:false, embassy:'https://www.google.com/search?q=Malta+embassy+visa+China', city:'Beijing/Shanghai' },
+    lie: { name:'列支敦士登', flag:'\uD83C\uDDF1\uD83C\uDDEE', standalone:false, embassy:'https://www.google.com/search?q=Liechtenstein+visa+Switzerland+embassy', city:'Swiss embassy in Beijing' },
+    bgr: { name:'保加利亚', flag:'\uD83C\uDDE7\uD83C\uDDEC', standalone:false, embassy:'https://www.google.com/search?q=Bulgaria+embassy+visa+China', city:'Beijing/Shanghai' },
+    rou: { name:'罗马尼亚', flag:'\uD83C\uDDF7\uD83C\uDDF4', standalone:false, embassy:'https://www.google.com/search?q=Romania+embassy+visa+China', city:'Beijing/Shanghai' },
+  };
+
   return {
     COUNTRIES,
     VISA_TYPES_BASE,
     VISA_CONFIG,
     SCHENGEN_COUNTRIES,
+    SCHENGEN_COUNTRY_INFO,
     MATERIAL_TEMPLATES,
     PROCESS_STEPS,
     FAQ_DATA,
@@ -2565,7 +2599,7 @@ const VISAPILOT = (function() {
 })();
 
 
-/* ===== storage.js ===== */
+/* storage.js */
 /**
  * VisaPilot — 存储层
  * 所有数据持久化到 localStorage
@@ -2755,7 +2789,7 @@ const VPStorage = (function() {
 })();
 
 
-/* ===== auth.js ===== */
+/* auth.js */
 /**
  * VisaPilot — 认证模块
  * 注册、登录、会话管理
@@ -2846,7 +2880,7 @@ const VPAuth = (function() {
 })();
 
 
-/* ===== chat.js ===== */
+/* chat.js */
 /**
  * VisaPilot — AI 智能问答 + 人工对话系统
  * 右下角浮动聊天 + 管理员/代办对话
@@ -3024,7 +3058,7 @@ const VPChat = (function() {
 })();
 
 
-/* ===== calendar.js ===== */
+/* calendar.js */
 /**
  * VisaPilot — 预约面签日历系统
  */
@@ -3345,7 +3379,7 @@ const VPCalendar = (function() {
 })();
 
 
-/* ===== diy.js ===== */
+/* diy.js */
 /**
  * VisaPilot — DIY 自助模块
  * 材料上传、行程单、保险、翻译
@@ -3974,7 +4008,7 @@ const VPDIY = (function() {
 })();
 
 
-/* ===== admin.js ===== */
+/* admin.js */
 /**
  * VisaPilot — 管理后台
  * 用户管理、代办审核、分配、对话、审核管理
@@ -4306,7 +4340,7 @@ const VPAdmin = (function() {
 })();
 
 
-/* ===== agent.js ===== */
+/* agent.js */
 /**
  * VisaPilot — 代办工作台
  * 订单面板、对话、材料审核
@@ -4739,7 +4773,7 @@ const VPAgent = (function() {
 })();
 
 
-/* ===== ui.js ===== */
+/* ui.js */
 /**
  * VisaPilot — UI 渲染层
  * 所有页面/视图的渲染函数
@@ -5254,22 +5288,10 @@ const VPUI = (function() {
     if (standaloneId && VISAPILOT.VISA_CONFIG[standaloneId]) {
       VPApp.navigateToCountry(standaloneId);
     } else {
-      VPApp.navigateToCountry('schengen');
-      // 在申根页内跳转到对应国家位置（或显示该国信息）
-      setTimeout(function() {
-        var cards = document.querySelectorAll('.vp-country-card');
-        for (var i = 0; i < cards.length; i++) {
-          if (cards[i].textContent.includes(name)) {
-            cards[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            cards[i].style.border = '2px solid var(--primary)';
-            cards[i].style.boxShadow = '0 0 0 4px rgba(37,99,235,0.2)';
-            setTimeout(function() { cards[i].style.border = ''; cards[i].style.boxShadow = ''; }, 1500);
-            break;
-          }
-        }
-      }, 100);
+      renderSchengenCountryDetail(code);
     }
   }
+
 
   // ========= DIY 标签切换 =========
   function switchDIYTab(btn, tab, countryId, visaType) {
@@ -5648,6 +5670,124 @@ const VPUI = (function() {
     };
     return d[visaType] || '以签证官决定为准';
   }
+  // ========= Schengen country detail pages =========
+  function renderSchengenCountryDetail(code) {
+    var info = VISAPILOT.SCHENGEN_COUNTRY_INFO ? VISAPILOT.SCHENGEN_COUNTRY_INFO[code] : null;
+    if (!info) { renderHome(); return; }
+    var main = document.getElementById('vp-main-content');
+    if (!main) return;
+    VPApp.currentCountry = 'schengen_' + code;
+    var config = VISAPILOT.VISA_CONFIG.schengen;
+    var visaType = '旅游';
+    VPApp.currentVisaType = visaType;
+    main.innerHTML = buildSchengenPage(info, config, visaType);
+    renderSidebar();
+    setTimeout(function() {
+      VPCalendar.init('schengen', visaType);
+      VPCalendar.renderWaitTime('schengen');
+    }, 100);
+  }
+  
+  function buildSchengenPage(info, config, visaType) {
+    var t = visaType.match(/旅游|商务|学生|过境|探亲访友|文化体育/);
+    var tmpl = VISAPILOT.MATERIAL_TEMPLATES[t ? t[0] : '旅游'] || VISAPILOT.MATERIAL_TEMPLATES['旅游'];
+    var fee = config.baseFees[visaType] || '请咨询';
+    var feeStr = typeof fee === 'number' ? '\u00a5' + fee : fee;
+    
+    var html = '<div class="vp-country-detail">' +
+      '<div class="vp-country-header"><h1>' + info.flag + ' ' + info.name + ' <span class="vp-badge-schengen">Schengen</span></h1></div>' +
+      '<div class="vp-china-banner">China Tips | Fees in CNY | Bank balance >=5w | Alipay/WeChat' +
+      '<button class="vp-btn vp-btn-sm" onclick="VPChat.toggleAIChat()" style="margin-left:8px">Chat</button></div>' +
+      '<div class="vp-visa-tabs" id="vp-visa-tabs-schengen">';
+    
+    for (var i = 0; i < config.types.length; i++) {
+      var t2 = config.types[i];
+      html += '<button class="vp-visa-tab' + (t2 === visaType ? ' active' : '') + '" onclick="VPUI.switchSchengenType(\'' + code + '\',\'' + t2 + '\')">' + t2 + '</button>';
+    }
+    html += '</div><div id="vp-visa-detail-content">' + buildSchengenBody(info, config, visaType, tmpl, feeStr) + '</div>';
+    return html;
+  }
+  
+  function buildSchengenBody(info, config, visaType, tmpl, feeStr) {
+    var user = VPAuth.currentUser();
+    var key = 'schengen_' + info.code;
+    
+    var html = '<div class="vp-visa-overview">' +
+      '<div class="vp-overview-card"><h3>Visa Overview</h3><div class="vp-overview-grid">' +
+      '<div class="vp-overview-item"><span>Type</span><strong>' + visaType + '</strong></div>' +
+      '<div class="vp-overview-item"><span>Fee</span><strong>' + feeStr + '</strong></div>' +
+      '<div class="vp-overview-item"><span>Process</span><strong>' + getProcessTime('schengen') + ' days</strong></div>' +
+      '<div class="vp-overview-item"><span>Validity</span><strong>' + getEnhancedValidity('schengen', visaType) + '</strong></div>' +
+      '<div class="vp-overview-item"><span>Stay</span><strong>' + getEnhancedStay('schengen', visaType) + '</strong></div>' +
+      '</div></div>';
+    
+    html += '<div class="vp-section"><h3>Materials</h3><div class="vp-materials-list">';
+    
+    for (var i2 = 0; i2 < tmpl.length; i2++) {
+      var m = tmpl[i2];
+      var canView = !user && m.required === true ? false : true;
+      html += '<div class="vp-material-item">' +
+        '<label class="vp-checkbox"><input type="checkbox"' + (canView ? '' : ' disabled') + '>' +
+        '<span>' + (canView ? m.name : '[Login to view]') + '</span></label>' +
+        '<span class="vp-material-required' + (m.required === true ? ' vp-required' : '') + '">' +
+        (m.required === true ? 'Required' : m.required === 'conditional' ? 'Optional' : 'Extra') + '</span>' +
+        (m.note ? '<span class="vp-text-muted vp-material-note">' + m.note + '</span>' : '') +
+      '</div>';
+    }
+    
+    html += '</div></div>';
+    
+    html += '<div class="vp-section"><h3>Process</h3><div class="vp-process-steps">';
+    for (var s = 0; s < VISAPILOT.PROCESS_STEPS.length; s++) {
+      var p = VISAPILOT.PROCESS_STEPS[s];
+      html += '<div class="vp-process-step"><div class="vp-step-number">' + p.step + '</div><div class="vp-step-content"><h4>' + p.title + '</h4><p>' + p.desc + '</p></div></div>';
+    }
+    html += '</div></div>';
+    
+    html += '<div class="vp-section"><h3>Centers</h3><div class="vp-center-list">';
+    for (var c2 = 0; c2 < config.centers.length; c2++) {
+      var cc = config.centers[c2];
+      html += '<div class="vp-center-item"><strong>' + cc.city + '</strong><p>' + cc.addr + '</p><span class="vp-text-muted">' + cc.system + '</span></div>';
+    }
+    html += '</div></div>';
+    
+    html += '<div class="vp-section"><h3>Embassy</h3>' +
+      '<a href="' + info.embassy + '" target="_blank" class="vp-btn vp-btn-outline">Visit ' + info.name + ' Embassy</a>' +
+      (info.city ? '<p class="vp-text-muted" style="margin-top:6px;font-size:0.85em">Consulate: ' + info.city + '</p>' : '') + '</div>';
+    
+    html += '<div class="vp-section" id="vp-calendar-section"><h3>Calendar</h3>' +
+      '<div id="vp-wait-time-schengen"></div>' +
+      '<div class="vp-center-selector" style="margin:12px 0"><label>Center:</label>' +
+      '<select class="vp-select" id="vp-center-select" onchange="VPCalendar.init(\'schengen\',\'' + visaType + '\')">';
+    for (var c3 = 0; c3 < config.centers.length; c3++) {
+      html += '<option value="' + config.centers[c3].city + '">' + config.centers[c3].city + '</option>';
+    }
+    html += '</select></div>' +
+      '<div class="vp-calendar-two-col"><div class="vp-cal-col-left"><div id="vp-calendar-body"></div></div>' +
+      '<div class="vp-cal-col-right"><h4 style="margin-bottom:8px">Time slots</h4><div id="vp-timeslots" class="vp-timeslot-area"></div></div></div>' +
+      '<div id="vp-booking-summary"></div></div></div>';
+    
+    return html;
+  }
+  
+  function switchSchengenType(code, newType) {
+    VPApp.currentVisaType = newType;
+    var info = VISAPILOT.SCHENGEN_COUNTRY_INFO ? VISAPILOT.SCHENGEN_COUNTRY_INFO[code] : null;
+    if (!info) return;
+    var config = VISAPILOT.VISA_CONFIG.schengen;
+    var t = newType.match(/旅游|商务|学生|过境|探亲访友|文化体育/);
+    var tmpl = VISAPILOT.MATERIAL_TEMPLATES[t ? t[0] : '旅游'] || VISAPILOT.MATERIAL_TEMPLATES['旅游'];
+    var fee = config.baseFees[newType] || '请咨询';
+    var feeStr = typeof fee === 'number' ? '\u00a5' + fee : fee;
+    var body = buildSchengenBody(info, config, newType, tmpl, feeStr);
+    document.getElementById('vp-visa-detail-content').innerHTML = body;
+    var tabs = document.querySelectorAll('#vp-visa-tabs-schengen .vp-visa-tab');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.toggle('active', tabs[i].textContent === newType);
+    }
+  }
+  
+
 
   return {
     renderHome, renderSidebar, renderCountryDetail,
@@ -5664,7 +5804,7 @@ const VPUI = (function() {
 })();
 
 
-/* ===== app.js ===== */
+/* app.js */
 /**
  * VisaPilot — 主应用控制器
  * 状态管理、路由、导航、全局工具
