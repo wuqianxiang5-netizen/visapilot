@@ -512,22 +512,10 @@ const VPUI = (function() {
     if (standaloneId && VISAPILOT.VISA_CONFIG[standaloneId]) {
       VPApp.navigateToCountry(standaloneId);
     } else {
-      VPApp.navigateToCountry('schengen');
-      // 在申根页内跳转到对应国家位置（或显示该国信息）
-      setTimeout(function() {
-        var cards = document.querySelectorAll('.vp-country-card');
-        for (var i = 0; i < cards.length; i++) {
-          if (cards[i].textContent.includes(name)) {
-            cards[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            cards[i].style.border = '2px solid var(--primary)';
-            cards[i].style.boxShadow = '0 0 0 4px rgba(37,99,235,0.2)';
-            setTimeout(function() { cards[i].style.border = ''; cards[i].style.boxShadow = ''; }, 1500);
-            break;
-          }
-        }
-      }, 100);
+      renderSchengenCountryDetail(code);
     }
   }
+
 
   // ========= DIY 标签切换 =========
   function switchDIYTab(btn, tab, countryId, visaType) {
@@ -906,6 +894,124 @@ const VPUI = (function() {
     };
     return d[visaType] || '以签证官决定为准';
   }
+  // ========= Schengen country detail pages =========
+  function renderSchengenCountryDetail(code) {
+    var info = VISAPILOT.SCHENGEN_COUNTRY_INFO ? VISAPILOT.SCHENGEN_COUNTRY_INFO[code] : null;
+    if (!info) { renderHome(); return; }
+    var main = document.getElementById('vp-main-content');
+    if (!main) return;
+    VPApp.currentCountry = 'schengen_' + code;
+    var config = VISAPILOT.VISA_CONFIG.schengen;
+    var visaType = '旅游';
+    VPApp.currentVisaType = visaType;
+    main.innerHTML = buildSchengenPage(info, config, visaType);
+    renderSidebar();
+    setTimeout(function() {
+      VPCalendar.init('schengen', visaType);
+      VPCalendar.renderWaitTime('schengen');
+    }, 100);
+  }
+  
+  function buildSchengenPage(info, config, visaType) {
+    var t = visaType.match(/旅游|商务|学生|过境|探亲访友|文化体育/);
+    var tmpl = VISAPILOT.MATERIAL_TEMPLATES[t ? t[0] : '旅游'] || VISAPILOT.MATERIAL_TEMPLATES['旅游'];
+    var fee = config.baseFees[visaType] || '请咨询';
+    var feeStr = typeof fee === 'number' ? '\u00a5' + fee : fee;
+    
+    var html = '<div class="vp-country-detail">' +
+      '<div class="vp-country-header"><h1>' + info.flag + ' ' + info.name + ' <span class="vp-badge-schengen">Schengen</span></h1></div>' +
+      '<div class="vp-china-banner">China Tips | Fees in CNY | Bank balance >=5w | Alipay/WeChat' +
+      '<button class="vp-btn vp-btn-sm" onclick="VPChat.toggleAIChat()" style="margin-left:8px">Chat</button></div>' +
+      '<div class="vp-visa-tabs" id="vp-visa-tabs-schengen">';
+    
+    for (var i = 0; i < config.types.length; i++) {
+      var t2 = config.types[i];
+      html += '<button class="vp-visa-tab' + (t2 === visaType ? ' active' : '') + '" onclick="VPUI.switchSchengenType(\'' + code + '\',\'' + t2 + '\')">' + t2 + '</button>';
+    }
+    html += '</div><div id="vp-visa-detail-content">' + buildSchengenBody(info, config, visaType, tmpl, feeStr) + '</div>';
+    return html;
+  }
+  
+  function buildSchengenBody(info, config, visaType, tmpl, feeStr) {
+    var user = VPAuth.currentUser();
+    var key = 'schengen_' + info.code;
+    
+    var html = '<div class="vp-visa-overview">' +
+      '<div class="vp-overview-card"><h3>Visa Overview</h3><div class="vp-overview-grid">' +
+      '<div class="vp-overview-item"><span>Type</span><strong>' + visaType + '</strong></div>' +
+      '<div class="vp-overview-item"><span>Fee</span><strong>' + feeStr + '</strong></div>' +
+      '<div class="vp-overview-item"><span>Process</span><strong>' + getProcessTime('schengen') + ' days</strong></div>' +
+      '<div class="vp-overview-item"><span>Validity</span><strong>' + getEnhancedValidity('schengen', visaType) + '</strong></div>' +
+      '<div class="vp-overview-item"><span>Stay</span><strong>' + getEnhancedStay('schengen', visaType) + '</strong></div>' +
+      '</div></div>';
+    
+    html += '<div class="vp-section"><h3>Materials</h3><div class="vp-materials-list">';
+    
+    for (var i2 = 0; i2 < tmpl.length; i2++) {
+      var m = tmpl[i2];
+      var canView = !user && m.required === true ? false : true;
+      html += '<div class="vp-material-item">' +
+        '<label class="vp-checkbox"><input type="checkbox"' + (canView ? '' : ' disabled') + '>' +
+        '<span>' + (canView ? m.name : '[Login to view]') + '</span></label>' +
+        '<span class="vp-material-required' + (m.required === true ? ' vp-required' : '') + '">' +
+        (m.required === true ? 'Required' : m.required === 'conditional' ? 'Optional' : 'Extra') + '</span>' +
+        (m.note ? '<span class="vp-text-muted vp-material-note">' + m.note + '</span>' : '') +
+      '</div>';
+    }
+    
+    html += '</div></div>';
+    
+    html += '<div class="vp-section"><h3>Process</h3><div class="vp-process-steps">';
+    for (var s = 0; s < VISAPILOT.PROCESS_STEPS.length; s++) {
+      var p = VISAPILOT.PROCESS_STEPS[s];
+      html += '<div class="vp-process-step"><div class="vp-step-number">' + p.step + '</div><div class="vp-step-content"><h4>' + p.title + '</h4><p>' + p.desc + '</p></div></div>';
+    }
+    html += '</div></div>';
+    
+    html += '<div class="vp-section"><h3>Centers</h3><div class="vp-center-list">';
+    for (var c2 = 0; c2 < config.centers.length; c2++) {
+      var cc = config.centers[c2];
+      html += '<div class="vp-center-item"><strong>' + cc.city + '</strong><p>' + cc.addr + '</p><span class="vp-text-muted">' + cc.system + '</span></div>';
+    }
+    html += '</div></div>';
+    
+    html += '<div class="vp-section"><h3>Embassy</h3>' +
+      '<a href="' + info.embassy + '" target="_blank" class="vp-btn vp-btn-outline">Visit ' + info.name + ' Embassy</a>' +
+      (info.city ? '<p class="vp-text-muted" style="margin-top:6px;font-size:0.85em">Consulate: ' + info.city + '</p>' : '') + '</div>';
+    
+    html += '<div class="vp-section" id="vp-calendar-section"><h3>Calendar</h3>' +
+      '<div id="vp-wait-time-schengen"></div>' +
+      '<div class="vp-center-selector" style="margin:12px 0"><label>Center:</label>' +
+      '<select class="vp-select" id="vp-center-select" onchange="VPCalendar.init(\'schengen\',\'' + visaType + '\')">';
+    for (var c3 = 0; c3 < config.centers.length; c3++) {
+      html += '<option value="' + config.centers[c3].city + '">' + config.centers[c3].city + '</option>';
+    }
+    html += '</select></div>' +
+      '<div class="vp-calendar-two-col"><div class="vp-cal-col-left"><div id="vp-calendar-body"></div></div>' +
+      '<div class="vp-cal-col-right"><h4 style="margin-bottom:8px">Time slots</h4><div id="vp-timeslots" class="vp-timeslot-area"></div></div></div>' +
+      '<div id="vp-booking-summary"></div></div></div>';
+    
+    return html;
+  }
+  
+  function switchSchengenType(code, newType) {
+    VPApp.currentVisaType = newType;
+    var info = VISAPILOT.SCHENGEN_COUNTRY_INFO ? VISAPILOT.SCHENGEN_COUNTRY_INFO[code] : null;
+    if (!info) return;
+    var config = VISAPILOT.VISA_CONFIG.schengen;
+    var t = newType.match(/旅游|商务|学生|过境|探亲访友|文化体育/);
+    var tmpl = VISAPILOT.MATERIAL_TEMPLATES[t ? t[0] : '旅游'] || VISAPILOT.MATERIAL_TEMPLATES['旅游'];
+    var fee = config.baseFees[newType] || '请咨询';
+    var feeStr = typeof fee === 'number' ? '\u00a5' + fee : fee;
+    var body = buildSchengenBody(info, config, newType, tmpl, feeStr);
+    document.getElementById('vp-visa-detail-content').innerHTML = body;
+    var tabs = document.querySelectorAll('#vp-visa-tabs-schengen .vp-visa-tab');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.toggle('active', tabs[i].textContent === newType);
+    }
+  }
+  
+
 
   return {
     renderHome, renderSidebar, renderCountryDetail,
