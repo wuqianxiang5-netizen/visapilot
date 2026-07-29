@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VisaPilot — 全球签证 · 智能指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛂</text></svg>">
+</head>
+<body>
+
+<!-- ===== 顶部导航 ===== -->
+<header class="vp-header" id="vp-header">
+  <div class="vp-header-logo" onclick="VPApp.navigateToCountry(null);VPUI.renderHome();VPUI.renderSidebar()">
+    <span>🛂</span> VisaPilot
+  </div>
+  <nav class="vp-header-nav">
+    <a data-nav="home">首页</a>
+    <a data-nav="consult">📝 提交咨询</a>
+    <a data-nav="login">🔐 登录</a>
+    <a data-nav="register">📝 注册</a>
+    <a data-nav="agent">🛎️ 代办工作台</a>
+    <a data-nav="admin">👑 管理</a>
+  </nav>
+  <div class="vp-header-right">
+    <span class="vp-user-status" id="vp-user-status">
+      <a href="#" onclick="VPApp.showLogin();return false">登录</a> | <a href="#" onclick="VPApp.showRegister();return false">注册</a>
+    </span>
+  </div>
+</header>
+
+<!-- ===== 侧边栏 ===== -->
+<aside class="vp-sidebar" id="vp-sidebar">
+  <!-- 由 JS 动态渲染 -->
+</aside>
+
+<!-- ===== 主内容 ===== -->
+<main class="vp-main" id="vp-main-content">
+  <!-- 由 JS 动态渲染 -->
+</main>
+
+<!-- ===== AI 浮动聊天 ===== -->
+<button class="vp-fab" id="vp-ai-btn" title="AI 智能助手">💬</button>
+<button class="vp-fab" id="vp-booking-btn" title="人工代办" style="bottom:24px">🛎️</button>
+
+<div class="vp-ai-chat-panel" id="vp-ai-chat-panel">
+  <div class="vp-ai-header">🤖 VisaPilot 智能助手</div>
+  <div class="vp-ai-messages" id="vp-ai-messages"></div>
+  <div class="vp-ai-input-area">
+    <input type="text" class="vp-input" id="vp-ai-input" placeholder="输入问题..." autocomplete="off">
+    <button class="vp-btn vp-btn-primary vp-btn-sm" id="vp-ai-send-btn">发送</button>
+  </div>
+</div>
+
+<!-- ===== 脚本 ===== -->
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/diy.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/agent.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
