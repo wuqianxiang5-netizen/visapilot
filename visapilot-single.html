@@ -3442,6 +3442,7 @@ const VPDIY = (function() {
     let html = `
       <div class="vp-diy-section">
         <div class="vp-upload-progress">
+          <div class="vp-progress-text"><strong>${progress}%</strong></div>
           <div class="vp-progress-bar">
             <div class="vp-progress-fill" style="width:${progress}%"></div>
           </div>
@@ -3605,9 +3606,41 @@ const VPDIY = (function() {
   }
 
   function jumpToCalendar(countryId, visaType) {
+    const user = VPAuth.currentUser();
+    if (!user) { VPApp.showToast('请先登录后再预约面签','warning'); return; }
+    const country = VISAPILOT.VISA_CONFIG[countryId];
+    if (!country) { VPApp.showToast('国家信息未找到','error'); return; }
+    // 保存预约记录
+    VPStorage.addBooking({
+      userId: user.phone, userName: user.name,
+      countryId: countryId, countryName: country.name, countryFlag: country.flag,
+      visaType: visaType, center: country.centers[0]?.city || '',
+      date: '', time: '', status: 'confirmed',
+    });
     VPCalendar.init(countryId, visaType);
     const section = document.getElementById('vp-calendar-section');
     if (section) section.scrollIntoView({ behavior: 'smooth' });
+    // 自动选中3天后第一个可用日期
+    setTimeout(function() {
+      var calBody = document.getElementById('vp-calendar-body');
+      if (!calBody) return;
+      var cells = calBody.querySelectorAll('.vp-cal-avail');
+      var target = new Date(); target.setDate(target.getDate() + 3);
+      var targetStr = target.getFullYear() + '-' + 
+        String(target.getMonth()+1).padStart(2,'0') + '-' + 
+        String(target.getDate()).padStart(2,'0');
+      var found = false;
+      for (var i = 0; i < cells.length; i++) {
+        if (cells[i].dataset.date >= targetStr) {
+          cells[i].click(); found = true; break;
+        }
+      }
+      if (!found && cells.length > 0) { cells[0].click(); }
+      // 移动到时间段区域
+      var ts = document.getElementById('vp-timeslots');
+      if (ts) ts.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      VPApp.showToast('✅ 预约记录已创建，请选择具体时间段','success');
+    }, 500);
   }
 
   // ========= 行程单生成 =========
