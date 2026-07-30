@@ -5418,25 +5418,25 @@ const VPUI = (function() {
         <!-- DIY 自助服务 -->
         <div class="vp-section">
           <h3>🛠️ DIY 自助服务</h3>
-          <!-- Level 1 tabs -->
+          <!-- 一级标签 -->
           <div class="vp-diy-level1" style="display:flex;gap:4px;margin-bottom:12px">
-            <button class="vp-diy-l1 active" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:0.9em;background:var(--primary);color:white" onclick="document.getElementById('vp-diy-plan-section').style.display='block';document.getElementById('vp-diy-upload-section').style.display='none'">🗺️ 行程制定</button>
-            <button class="vp-diy-l1" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:0.9em" onclick="document.getElementById('vp-diy-plan-section').style.display='none';document.getElementById('vp-diy-upload-section').style.display='block'">📄 材料上传</button>
+            <button class="vp-diy-l1 active" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:0.9em;background:var(--primary);color:white" onclick="VPUI.switchDIYLevel1('plan','${countryId}','${visaType}')">🗺️ 行程制定</button>
+            <button class="vp-diy-l1" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:0.9em" onclick="VPUI.switchDIYLevel1('upload','${countryId}','${visaType}')">📄 材料上传</button>
           </div>
-          <!-- Plan section -->
+          <!-- 行程制定 -->
           <div id="vp-diy-plan-section">
             <div class="vp-diy-tabs" style="margin-bottom:8px">
-              <button class="vp-diy-tab active">📋 行程单</button>
-              <button class="vp-diy-tab">🏨 酒店</button>
-              <button class="vp-diy-tab">✈️ 机票</button>
-              <button class="vp-diy-tab">🏥 保险</button>
-              <button class="vp-diy-tab">🌐 翻译</button>
+              <button class="vp-diy-tab active" onclick="VPUI.switchPlanTab('itinerary','${countryId}','${visaType}')">📋 行程单</button>
+              <button class="vp-diy-tab" onclick="VPUI.switchPlanTab('hotel','${countryId}','${visaType}')">🏨 酒店</button>
+              <button class="vp-diy-tab" onclick="VPUI.switchPlanTab('flight','${countryId}','${visaType}')">✈️ 机票</button>
+              <button class="vp-diy-tab" onclick="VPUI.switchPlanTab('insurance','${countryId}','${visaType}')">🏥 保险</button>
+              <button class="vp-diy-tab" onclick="VPUI.switchPlanTab('translation','${countryId}','${visaType}')">🌐 翻译</button>
             </div>
             <div id="vp-diy-plan-content">
               ${VPAuth.currentUser() ? '<p class="vp-text-muted">选择上方标签开始制定行程</p>' : '<p class="vp-login-prompt"><a href="#" onclick="VPApp.showLogin();return false">🔐 登录/注册</a> 使用DIY自助服务</p>'}
             </div>
           </div>
-          <!-- Upload section -->
+          <!-- 材料上传 -->
           <div id="vp-diy-upload-section" style="display:none">
             <div id="vp-diy-upload-inner"></div>
           </div>
@@ -5496,25 +5496,16 @@ const VPUI = (function() {
 
   // ========= DIY 标签切换 =========
   // ========= NEW: DIY level switching =========
-  
-  
   function switchDIYLevel1(level, countryId, visaType) {
     var planSec = document.getElementById('vp-diy-plan-section');
     var uploadSec = document.getElementById('vp-diy-upload-section');
     if (planSec) planSec.style.display = level === 'plan' ? 'block' : 'none';
     if (uploadSec) uploadSec.style.display = level === 'upload' ? 'block' : 'none';
+    // Toggle button styles
     var btns = document.querySelectorAll('.vp-diy-l1');
     btns.forEach(function(b) {
-      b.style.background = 'transparent';
-      b.style.color = 'var(--text)';
-    });
-    // Find the button whose text matches the selected level
-    btns.forEach(function(b) {
-      if ((level === 'plan' && (b.textContent.includes('行程') || b.textContent.includes('制定'))) ||
-          (level === 'upload' && b.textContent.includes('材料'))) {
-        b.style.background = 'var(--primary)';
-        b.style.color = 'white';
-      }
+      b.style.background = b.textContent.includes(level === 'plan' ? '行情' : '材料') ? 'var(--primary)' : 'transparent';
+      b.style.color = b.textContent.includes(level === 'plan' ? '行情' : '材料') ? 'white' : 'var(--text)';
     });
     if (level === 'upload') {
       var typeClean = visaType ? visaType.match(/旅游|商务|学生|工作|过境/) : null;
@@ -5524,11 +5515,19 @@ const VPUI = (function() {
     }
   }
   
-  
   function switchPlanTab(tab, countryId, visaType) {
     var parent = document.querySelector('#vp-diy-plan-section .vp-diy-tabs');
     if (parent) {
-      parent.querySelectorAll('.vp-diy-tab').forEach(function(t) { t.classList.remove('active'); });
+      parent.querySelectorAll('.vp-diy-tab').forEach(function(t) {
+        t.classList.remove('active');
+        if ((tab === 'itinerary' && t.textContent.includes('行程单')) ||
+            (tab === 'hotel' && t.textContent.includes('酒店')) ||
+            (tab === 'flight' && t.textContent.includes('机票')) ||
+            (tab === 'insurance' && t.textContent.includes('保险')) ||
+            (tab === 'translation' && t.textContent.includes('翻译'))) {
+          t.classList.add('active');
+        }
+      });
     }
     var content = document.getElementById('vp-diy-plan-content');
     if (!content) return;
@@ -5538,21 +5537,19 @@ const VPUI = (function() {
     else if (tab === 'insurance') { VPDIY.renderInsurance('vp-diy-plan-content', countryId); }
     else if (tab === 'translation') { VPDIY.renderTranslation('vp-diy-plan-content'); }
   }
-
-//   function renderDIYItinerary(countryId, visaType) {
-//     var c = document.getElementById('vp-diy-plan-content');
-//     if (!c) return;
-//     var today = new Date();
-//     var weekLater = new Date(Date.now() + 7 * 86400000);
-//     c.innerHTML = '<div class="vp-diy-itinerary"><h4>📋 生成旅行行程单</h4>' +
-//       '<div class="vp-form-row"><label>出发日期：<input type="date" class="vp-input" id="vp-it-start" value="' + today.toISOString().slice(0,10) + '"></label>' +
-//       '<label>返回日期：<input type="date" class="vp-input" id="vp-it-end" value="' + weekLater.toISOString().slice(0,10) + '"></label></div>' +
-//       '<div class="vp-form-row"><label>旅行风格：<select class="vp-select" id="vp-it-style"><option value="relaxed">悠闲放松</option><option value="balanced" selected>适中均衡</option><option value="compact">紧凑高效</option></select></label>' +
-//       '<label>兴趣偏好：<select class="vp-select" id="vp-it-preference"><option value="mixed" selected>综合</option><option value="culture">文化历史</option><option value="gourmet">美食购物</option><option value="nature">自然风光</option></select></label></div>' +
-//       '<button class="vp-btn vp-btn-primary" onclick="VPUI.generateItineraryFromDIY('' + countryId + '','' + visaType + '')">🗺️ 生成行程单表格</button>' +
-//       '<div id="vp-itinerary-result" style="margin-top:16px"></div></div>';
-//   }
-// 
+  
+  function renderDIYItinerary(countryId, visaType) {
+    var c = document.getElementById('vp-diy-plan-content');
+    if (!c) return;
+    c.innerHTML = '<div class="vp-diy-itinerary"><h4>📋 生成旅行行程单</h4>' +
+      '<div class="vp-form-row"><label>出发日期：<input type="date" class="vp-input" id="vp-it-start" value="' + new Date().toISOString().slice(0,10) + '"></label>' +
+      '<label>返回日期：<input type="date" class="vp-input" id="vp-it-end" value="' + new Date(Date.now()+7*86400000).toISOString().slice(0,10) + '"></label></div>' +
+      '<div class="vp-form-row"><label>旅行风格：<select class="vp-select" id="vp-it-style"><option value="relaxed">悠闲放松</option><option value="balanced" selected>适中均衡</option><option value="compact">紧凑高效</option></select></label>' +
+      '<label>兴趣偏好：<select class="vp-select" id="vp-it-preference"><option value="mixed" selected>综合</option><option value="culture">文化历史</option><option value="gourmet">美食购物</option><option value="nature">自然风光</option></select></label></div>' +
+      '<button class="vp-btn vp-btn-primary" onclick="VPUI.generateItineraryFromDIY('' + countryId + '','' + visaType + '')">🗺️ 生成行程单表格</button>' +
+      '<div id="vp-itinerary-result" style="margin-top:16px"></div></div>';
+  }
+  
   function renderDIYHotel(countryId, visaType) {
     var c = document.getElementById('vp-diy-plan-content');
     if (!c) return;
@@ -5568,7 +5565,7 @@ const VPUI = (function() {
       '<div class="vp-center-item"><strong>' + city.hotels.economy.name + '</strong><p>' + city.hotels.economy.price + ' · ' + city.hotels.economy.area + '</p><a href="https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(city.name + ' ' + city.hotels.economy.area) + '" target="_blank" class="vp-btn vp-btn-xs vp-btn-outline">查看价格</a></div>' +
       '<div class="vp-center-item"><strong>' + city.hotels.comfort.name + '</strong><p>' + city.hotels.comfort.price + ' · ' + city.hotels.comfort.area + '</p><a href="https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(city.name + ' ' + city.hotels.comfort.area) + '" target="_blank" class="vp-btn vp-btn-xs vp-btn-outline">查看价格</a></div></div></div>';
   }
-
+  
   function renderDIYFlight(countryId, visaType) {
     var c = document.getElementById('vp-diy-plan-content');
     if (!c) return;
@@ -5582,8 +5579,8 @@ const VPUI = (function() {
       '<p class="vp-text-muted" style="margin-top:12px">选择出发城市和日期，前往携程或Booking.com查询最新航班信息。</p>' +
       '<p class="vp-text-muted">北京、上海、广州有直飞 ' + cityName + ' 的航班。</p></div>';
   }
-
-function switchDIYTab(btn, tab, countryId, visaType) {
+  
+  function switchDIYTab(btn, tab, countryId, visaType) {
     const parent = btn.closest('.vp-diy-tabs');
     if (parent) parent.querySelectorAll('.vp-diy-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
@@ -6124,7 +6121,6 @@ function switchDIYTab(btn, tab, countryId, visaType) {
     matChecked: _ckGet,
     _aptInfo, getEnhancedValidity, getEnhancedStay,
     renderVisaDetail, renderSchengenPage, renderMyBookings,
-    switchDIYLevel1, switchPlanTab,
     switchDIYLevel1, switchPlanTab,
     renderProfile, searchCountry, switchDIYTab,
     generateItineraryFromDIY, generatePackageFromDIY,
