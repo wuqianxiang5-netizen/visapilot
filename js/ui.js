@@ -413,7 +413,7 @@ const VPUI = (function() {
 <!-- 材料清单 -->
         <div class="vp-section">
           <h3>📋 材料清单</h3>
-          <div class="vp-materials-list">
+          <div class="vp-materials-list vp-materials-list-sm">
             ${templates.map(m => {
               const reqLabel = m.required === true ? '必交' : m.required === 'conditional' ? '视情况' : '可选';
               const user = VPAuth.currentUser();

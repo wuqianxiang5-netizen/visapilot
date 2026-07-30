@@ -2041,3 +2041,17 @@ a:hover { text-decoration: underline; }
   .vp-hero-stats { grid-template-columns: repeat(2, 1fr); }
   .vp-hero-stat-num { font-size: 28px; }
 }
+
+
+/* ===== 材料清单字体缩小 ===== */
+.vp-materials-list-sm .vp-material-item {
+  font-size: 0.85em;
+  padding: 6px 10px;
+}
+.vp-materials-list-sm .vp-material-item .vp-btn-xs {
+  font-size: 0.7em;
+  padding: 1px 6px;
+}
+.vp-materials-list-sm .vp-checkbox span {
+  font-size: 0.88em;
+}
