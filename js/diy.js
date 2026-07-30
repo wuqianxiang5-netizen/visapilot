@@ -10,6 +10,14 @@ const VPDIY = (function() {
   function uploadMaterial(countryId, visaType, materialId, file, onComplete) {
     const user = VPAuth.currentUser();
     if (!user) { VPApp.showToast('请先登录','warning'); return; }
+    
+    // 验证文件格式
+    var allowedExts = ['jpg','jpeg','png','gif','pdf','doc','docx','xls','xlsx'];
+    var ext = file.name ? file.name.split('.').pop().toLowerCase() : '';
+    if (!allowedExts.includes(ext)) {
+      VPApp.showToast('不支持的文件格式，请上传 JPG/PNG/PDF/Word/Excel','warning');
+      return;
+    }
 
     var maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
@@ -452,7 +460,7 @@ const VPDIY = (function() {
         <div class="vp-insurance-upload" style="margin-top:12px">
           <label class="vp-btn vp-btn-sm vp-btn-outline">
             📤 上传自己的保险文件
-            <input type="file" accept=".jpg,.jpeg,.png,.pdf" style="display:none" onchange="VPDIY.uploadInsurance(this)">
+            <input type="file" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx" style="display:none" onchange="VPDIY.uploadInsurance(this)">
           </label>
           <span id="vp-insurance-file-status"></span>
         </div>
@@ -502,7 +510,7 @@ const VPDIY = (function() {
         <div class="vp-translation-upload" style="margin-top:12px">
           <label class="vp-btn vp-btn-sm vp-btn-outline">
             📤 上传中文文件（JPG/PNG/PDF）
-            <input type="file" accept=".jpg,.jpeg,.png,.pdf" style="display:none" onchange="VPDIY.translateFile(this)">
+            <input type="file" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx" style="display:none" onchange="VPDIY.translateFile(this)">
           </label>
           <button class="vp-btn vp-btn-sm vp-btn-primary" onclick="VPDIY.toggleTranslation()" style="margin-left:8px">🔄 原文/译文切换</button>
         </div>
