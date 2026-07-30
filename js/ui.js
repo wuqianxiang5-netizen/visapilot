@@ -480,29 +480,18 @@ const VPUI = (function() {
         <!-- DIY 自助服务 -->
         <div class="vp-section">
           <h3>🛠️ DIY 自助服务</h3>
-          <!-- 一级标签 -->
-          <div class="vp-diy-level1" style="display:flex;gap:4px;margin-bottom:12px">
-            <button class="vp-diy-l1 active" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:0.9em;background:var(--primary);color:white" onclick="VPUI.switchDIYLevel1('plan','${countryId}','${visaType}')">🗺️ 行程制定</button>
-            <button class="vp-diy-l1" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:0.9em" onclick="VPUI.switchDIYLevel1('upload','${countryId}','${visaType}')">📄 材料上传</button>
+          <div class="vp-diy-tabs">
+            <button class="vp-diy-tab active" onclick="VPUI.switchDIYTab(this,'upload','${countryId}','${visaType}')">📄 材料上传</button>
+            <button class="vp-diy-tab" onclick="VPUI.switchDIYTab(this,'itinerary','${countryId}','${visaType}')">🗺️ 行程</button>
+            <button class="vp-diy-tab" onclick="VPUI.switchDIYTab(this,'insurance','${countryId}','${visaType}')">🏥 保险</button>
+            <button class="vp-diy-tab" onclick="VPUI.switchDIYTab(this,'translation','${countryId}','${visaType}')">🌐 翻译</button>
+            <button class="vp-diy-tab" onclick="VPUI.switchDIYTab(this,'generate','${countryId}','${visaType}')">📦 生成</button>
           </div>
-          <!-- 行程制定 -->
-          <div id="vp-diy-plan-section">
-            <div class="vp-diy-tabs" style="margin-bottom:8px">
-              <button class="vp-diy-tab active" onclick="VPUI.switchPlanTab('itinerary','${countryId}','${visaType}')">📋 行程单</button>
-              <button class="vp-diy-tab" onclick="VPUI.switchPlanTab('hotel','${countryId}','${visaType}')">🏨 酒店</button>
-              <button class="vp-diy-tab" onclick="VPUI.switchPlanTab('flight','${countryId}','${visaType}')">✈️ 机票</button>
-              <button class="vp-diy-tab" onclick="VPUI.switchPlanTab('insurance','${countryId}','${visaType}')">🏥 保险</button>
-              <button class="vp-diy-tab" onclick="VPUI.switchPlanTab('translation','${countryId}','${visaType}')">🌐 翻译</button>
-            </div>
-            <div id="vp-diy-plan-content">
-              ${VPAuth.currentUser() ? '<p class="vp-text-muted">选择上方标签开始制定行程</p>' : '<p class="vp-login-prompt"><a href="#" onclick="VPApp.showLogin();return false">🔐 登录/注册</a> 使用DIY自助服务</p>'}
-            </div>
-          </div>
-          <!-- 材料上传 -->
-          <div id="vp-diy-upload-section" style="display:none">
-            <div id="vp-diy-upload-inner"></div>
+          <div id="vp-diy-content">
+            ${VPAuth.currentUser() ? '<p class="vp-text-muted">选择上方标签开始DIY服务</p>' : '<p class="vp-login-prompt"><a href="#" onclick="VPApp.showLogin();return false">🔐 登录/注册</a> 使用DIY自助服务</p>'}
           </div>
         </div>
+
         <!-- 咨询入口 -->
         <div class="vp-section" style="text-align:center;padding:20px;background:var(--bg-muted);border-radius:12px">
           <p>还有疑问？<a href="#" onclick="VPChat.toggleAIChat();return false">💬 咨询智能助手</a> 或 <a href="#" onclick="VPApp.showConsultForm();return false">📝 提交咨询表单</a></p>
@@ -557,91 +546,6 @@ const VPUI = (function() {
 
 
   // ========= DIY 标签切换 =========
-  // ========= NEW: DIY level switching =========
-  function switchDIYLevel1(level, countryId, visaType) {
-    var planSec = document.getElementById('vp-diy-plan-section');
-    var uploadSec = document.getElementById('vp-diy-upload-section');
-    if (planSec) planSec.style.display = level === 'plan' ? 'block' : 'none';
-    if (uploadSec) uploadSec.style.display = level === 'upload' ? 'block' : 'none';
-    // Toggle button styles
-    var btns = document.querySelectorAll('.vp-diy-l1');
-    btns.forEach(function(b) {
-      b.style.background = b.textContent.includes(level === 'plan' ? '行情' : '材料') ? 'var(--primary)' : 'transparent';
-      b.style.color = b.textContent.includes(level === 'plan' ? '行情' : '材料') ? 'white' : 'var(--text)';
-    });
-    if (level === 'upload') {
-      var typeClean = visaType ? visaType.match(/旅游|商务|学生|工作|过境/) : null;
-      typeClean = typeClean ? typeClean[0] : '旅游';
-      var tmpl = VISAPILOT.MATERIAL_TEMPLATES[typeClean] || VISAPILOT.MATERIAL_TEMPLATES['旅游'];
-      VPDIY.renderUploadSection('vp-diy-upload-inner', countryId, visaType || '旅游', tmpl);
-    }
-  }
-  
-  function switchPlanTab(tab, countryId, visaType) {
-    var parent = document.querySelector('#vp-diy-plan-section .vp-diy-tabs');
-    if (parent) {
-      parent.querySelectorAll('.vp-diy-tab').forEach(function(t) {
-        t.classList.remove('active');
-        if ((tab === 'itinerary' && t.textContent.includes('行程单')) ||
-            (tab === 'hotel' && t.textContent.includes('酒店')) ||
-            (tab === 'flight' && t.textContent.includes('机票')) ||
-            (tab === 'insurance' && t.textContent.includes('保险')) ||
-            (tab === 'translation' && t.textContent.includes('翻译'))) {
-          t.classList.add('active');
-        }
-      });
-    }
-    var content = document.getElementById('vp-diy-plan-content');
-    if (!content) return;
-    if (tab === 'itinerary') renderDIYItinerary(countryId, visaType);
-    else if (tab === 'hotel') renderDIYHotel(countryId, visaType);
-    else if (tab === 'flight') renderDIYFlight(countryId, visaType);
-    else if (tab === 'insurance') { VPDIY.renderInsurance('vp-diy-plan-content', countryId); }
-    else if (tab === 'translation') { VPDIY.renderTranslation('vp-diy-plan-content'); }
-  }
-  
-  function renderDIYItinerary(countryId, visaType) {
-    var c = document.getElementById('vp-diy-plan-content');
-    if (!c) return;
-    c.innerHTML = '<div class="vp-diy-itinerary"><h4>📋 生成旅行行程单</h4>' +
-      '<div class="vp-form-row"><label>出发日期：<input type="date" class="vp-input" id="vp-it-start" value="' + new Date().toISOString().slice(0,10) + '"></label>' +
-      '<label>返回日期：<input type="date" class="vp-input" id="vp-it-end" value="' + new Date(Date.now()+7*86400000).toISOString().slice(0,10) + '"></label></div>' +
-      '<div class="vp-form-row"><label>旅行风格：<select class="vp-select" id="vp-it-style"><option value="relaxed">悠闲放松</option><option value="balanced" selected>适中均衡</option><option value="compact">紧凑高效</option></select></label>' +
-      '<label>兴趣偏好：<select class="vp-select" id="vp-it-preference"><option value="mixed" selected>综合</option><option value="culture">文化历史</option><option value="gourmet">美食购物</option><option value="nature">自然风光</option></select></label></div>' +
-      '<button class="vp-btn vp-btn-primary" onclick="VPUI.generateItineraryFromDIY('' + countryId + '','' + visaType + '')">🗺️ 生成行程单表格</button>' +
-      '<div id="vp-itinerary-result" style="margin-top:16px"></div></div>';
-  }
-  
-  function renderDIYHotel(countryId, visaType) {
-    var c = document.getElementById('vp-diy-plan-content');
-    if (!c) return;
-    var codeMap = { usa:'usa', uk:'gbr', schengen:'fra', japan:'jpn', korea:'kor', india:'ind', australia:'aus', canada:'can', ireland:'irl', philippines:'phl', france:'fra', italy:'ita', spain:'esp', germany:'deu', netherlands:'nld', switzerland:'che', singapore:'sgp', thailand:'tha', vietnam:'vnm', malaysia:'mys' };
-    var code = codeMap[countryId] || 'fra';
-    var cd = VISAPILOT.CITY_DATA[code];
-    if (!cd) { c.innerHTML = '<div class="vp-empty-state">暂不支持该国家的酒店信息</div>'; return; }
-    var city = cd.cities[0];
-    c.innerHTML = '<div class="vp-diy-plan-sub"><h4>🏨 酒店推荐 - ' + cd.flag + ' ' + city.name + '</h4>' +
-      '<div class="vp-itinerary-links"><a href="https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(city.name) + '" target="_blank" class="vp-btn vp-btn-sm vp-btn-primary">🏨 Booking.com 订酒店</a>' +
-      '<a href="https://hotels.ctrip.com/" target="_blank" class="vp-btn vp-btn-sm vp-btn-primary">🏨 携程订酒店</a></div>' +
-      '<div class="vp-center-list" style="margin-top:12px">' +
-      '<div class="vp-center-item"><strong>' + city.hotels.economy.name + '</strong><p>' + city.hotels.economy.price + ' · ' + city.hotels.economy.area + '</p><a href="https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(city.name + ' ' + city.hotels.economy.area) + '" target="_blank" class="vp-btn vp-btn-xs vp-btn-outline">查看价格</a></div>' +
-      '<div class="vp-center-item"><strong>' + city.hotels.comfort.name + '</strong><p>' + city.hotels.comfort.price + ' · ' + city.hotels.comfort.area + '</p><a href="https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(city.name + ' ' + city.hotels.comfort.area) + '" target="_blank" class="vp-btn vp-btn-xs vp-btn-outline">查看价格</a></div></div></div>';
-  }
-  
-  function renderDIYFlight(countryId, visaType) {
-    var c = document.getElementById('vp-diy-plan-content');
-    if (!c) return;
-    var codeMap = { usa:'usa', uk:'gbr', schengen:'fra', japan:'jpn', korea:'kor', india:'ind', australia:'aus', canada:'can', ireland:'irl', philippines:'phl', france:'fra', italy:'ita', spain:'esp', germany:'deu', netherlands:'nld', switzerland:'che', singapore:'sgp', thailand:'tha', vietnam:'vnm', malaysia:'mys' };
-    var code = codeMap[countryId] || 'fra';
-    var cd = VISAPILOT.CITY_DATA[code];
-    var cityName = cd ? cd.cities[0].name : '目的地城市';
-    c.innerHTML = '<div class="vp-diy-plan-sub"><h4>✈️ 机票预订</h4>' +
-      '<div class="vp-itinerary-links"><a href="https://flights.ctrip.com/" target="_blank" class="vp-btn vp-btn-sm vp-btn-primary">✈️ 携程订机票</a>' +
-      '<a href="https://www.booking.com/flights/index.html" target="_blank" class="vp-btn vp-btn-sm vp-btn-primary">✈️ Booking.com 订机票</a></div>' +
-      '<p class="vp-text-muted" style="margin-top:12px">选择出发城市和日期，前往携程或Booking.com查询最新航班信息。</p>' +
-      '<p class="vp-text-muted">北京、上海、广州有直飞 ' + cityName + ' 的航班。</p></div>';
-  }
-  
   function switchDIYTab(btn, tab, countryId, visaType) {
     const parent = btn.closest('.vp-diy-tabs');
     if (parent) parent.querySelectorAll('.vp-diy-tab').forEach(t => t.classList.remove('active'));
@@ -1183,7 +1087,6 @@ const VPUI = (function() {
     matChecked: _ckGet,
     _aptInfo, getEnhancedValidity, getEnhancedStay,
     renderVisaDetail, renderSchengenPage, renderMyBookings,
-    switchDIYLevel1, switchPlanTab,
     renderProfile, searchCountry, switchDIYTab,
     generateItineraryFromDIY, generatePackageFromDIY,
     switchMyTab, showConsultForm, submitConsult,
