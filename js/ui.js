@@ -418,6 +418,7 @@ const VPUI = (function() {
               const reqLabel = m.required === true ? '必交' : m.required === 'conditional' ? '视情况' : '可选';
               const user = VPAuth.currentUser();
               const canView = !user && m.required === true ? false : true;
+              const matNote = VISAPILOT.MATERIAL_COUNTRY_DETAILS ? (VISAPILOT.MATERIAL_COUNTRY_DETAILS[countryId + '_' + m.id] || m.note || '') : (m.note || '');
               return `
                 <div class="vp-material-item">
                   <label class="vp-checkbox ${_ckGet(countryId, visaType, m.id) ? 'vp-checked' : ''}">
@@ -425,7 +426,7 @@ const VPUI = (function() {
                     <span>${canView ? m.name : '🔒 注册会员可见'}</span>
                   </label>
                   <span class="vp-material-required ${m.required === true ? 'vp-required' : ''}">${canView ? reqLabel : '🔒'}</span>
-                  ${canView && m.note ? `<span class="vp-text-muted vp-material-note">${m.note}</span>` : ''}
+                  ${canView && matNote ? `<span class="vp-text-muted vp-material-note">${matNote}</span>` : ''}
                 </div>
               `;
             }).join('')}

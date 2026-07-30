@@ -2394,6 +2394,15 @@ const VISAPILOT = (function() {
       feeNote:'贴纸签约¥200，加急¥400',
       baseFees: { '旅游':200,'商务':200 }
     },
+
+    // === 申根区（通用） ===
+    'schengen_passport': '护照有效期须在计划离境申根区后至少3个月，至少2页空白。签发不超过10年。',
+    'schengen_bank': '近3-6个月流水，余额建议5万人民币以上。流水稳定最佳，需提供资金来源说明。',
+    'schengen_photo': '白底彩色照片，35×45mm，近6个月内拍摄，脸部占比60-70%。',
+    'schengen_employment': '公司抬头纸打印，需含姓名、职位、收入、入职日期、准假说明。英文+公章。',
+    'schengen_invitation': '邀请函需含邀请人信息、受邀人信息、行程安排、住宿安排、邀请人签名。',
+    'schengen_insurance': '申根强制要求：保额≥3万欧元，覆盖全部申根天数。',
+    'schengen_business_lic': '营业执照副本+英文翻译件，加盖公章。',
   };
 
   // ========= 申根子国家 =========
@@ -2444,7 +2453,8 @@ const VISAPILOT = (function() {
       { id:'business_lic',  name:'营业执照副本',      required:'conditional', note:'企业主或单位提供，需加盖公章' },
       { id:'id_card',       name:'身份证复印件',      required:true, note:'正反面复印' },
       { id:'household',     name:'户口本复印件',      required:true, note:'所有页复印' },
-    ],
+              { id:'asset_proof',  name:'资产证明(房产/车辆等)', required:'conditional', note:'房产证、车辆登记证、存款证明等，非必需但有助于出签' },
+],
     '商务': [
       { id:'passport',      name:'护照原件',         required:true, note:'有效期6个月以上' },
       { id:'photo',         name:'白底证件照',       required:true, note:'近6个月内' },
@@ -2455,7 +2465,8 @@ const VISAPILOT = (function() {
       { id:'business_lic',  name:'营业执照副本',      required:true, note:'加盖公章' },
       { id:'id_card',       name:'身份证复印件',      required:true, note:'正反面' },
       { id:'tax',           name:'纳税证明',          required:'conditional', note:'企业主建议提供' },
-    ],
+              { id:'asset_proof',  name:'资产证明(房产/车辆等)', required:'conditional', note:'房产证、车辆登记证等，非必需但有助于展示企业实力' },
+],
     '学生': [
       { id:'passport',      name:'护照原件',         required:true, note:'有效期6个月以上' },
       { id:'photo',         name:'白底证件照',       required:true, note:'近6个月内' },
@@ -2467,7 +2478,8 @@ const VISAPILOT = (function() {
       { id:'consent',       name:'父母同意书',         required:'conditional', note:'未成年申请人' },
       { id:'id_card',       name:'身份证复印件',       required:true, note:'正反面' },
       { id:'household',     name:'户口本复印件',       required:true },
-    ],
+              { id:'asset_proof',  name:'资产证明(房产/车辆等)', required:'conditional', note:'父母名下的房产证、车辆登记证等，有助于展示家庭经济实力' },
+],
     '工作': [
       { id:'passport',      name:'护照原件',         required:true },
       { id:'photo',         name:'白底证件照',       required:true },
@@ -2478,14 +2490,16 @@ const VISAPILOT = (function() {
       { id:'police',        name:'无犯罪记录证明',     required:true },
       { id:'medical',       name:'体检报告',          required:'conditional' },
       { id:'id_card',       name:'身份证复印件',       required:true },
-    ],
+              { id:'asset_proof',  name:'资产证明(房产/车辆等)', required:'conditional', note:'房产证、车辆登记证等辅助材料' },
+],
     '过境': [
       { id:'passport',      name:'护照原件',         required:true },
       { id:'visa_dest',     name:'目的地国签证',      required:true, note:'如已持有' },
       { id:'ticket',        name:'联程机票',          required:true },
       { id:'application',   name:'过境签证申请表',     required:true },
       { id:'photo',         name:'证件照',           required:true },
-    ],
+              { id:'asset_proof',  name:'资产证明(房产/车辆等)', required:'conditional', note:'房产证、车辆登记证等（如有）' },
+],
     '探亲访友': [
       { id:'passport',      name:'护照原件',         required:true },
       { id:'photo',         name:'白底证件照',       required:true },
@@ -2495,7 +2509,8 @@ const VISAPILOT = (function() {
       { id:'relationship',  name:'关系证明',          required:true },
       { id:'bank',          name:'银行流水',          required:true },
       { id:'insurance',     name:'旅行医疗保险',       required:true },
-    ],
+              { id:'asset_proof',  name:'资产证明(房产/车辆等)', required:'conditional', note:'房产证、车辆登记证等，有助于展示国内约束力' },
+],
     '医疗': [
       { id:'passport',      name:'护照原件',         required:true },
       { id:'photo',         name:'白底证件照',       required:true },
@@ -2504,7 +2519,8 @@ const VISAPILOT = (function() {
       { id:'hospital_app',  name:'医院预约函',        required:true },
       { id:'financial',     name:'财力证明',          required:true },
       { id:'insurance',     name:'医疗保险',          required:true },
-    ],
+              { id:'asset_proof',  name:'资产证明(房产/车辆等)', required:'conditional', note:'房产证、车辆登记证等，用于展示经济能力' },
+],
   };
 
   // ========= 办理流程 =========
@@ -2705,6 +2721,82 @@ const VISAPILOT = (function() {
     rou: { name:'罗马尼亚', flag:'\uD83C\uDDF7\uD83C\uDDF4', standalone:false, embassy:'https://www.google.com/search?q=Romania+embassy+visa+China', city:'Beijing/Shanghai' },
   };
 
+  // ========= 国家特定材料要求细节 =========
+  const MATERIAL_COUNTRY_DETAILS = {
+    // === 美国 ===
+    'usa_passport': '护照有效期须在预计离美日期后至少6个月，至少2页空白签证页。曾丢失护照需说明。',
+    'usa_bank': '近3-6个月工资卡流水，余额建议10万人民币以上。提供房产证/车辆登记证作为辅助更佳。',
+    'usa_photo': '白底彩色照片，51×51mm正方形（美签专用尺寸），近6个月内拍摄，不可戴眼镜。',
+    'usa_employment': '使用公司抬头纸打印，内容含姓名、职位、收入(年薪)、入职时间、准假说明。HR签名+公司公章。',
+    'usa_invitation': '邀请方需提供DS-160确认页、邀请函原件(含行程安排、费用承担说明、邀请人联系方式)。',
+    'usa_business_lic': '加盖公章的企业营业执照副本复印件，如为政府/事业单位可提供组织机构代码证。',
+
+    // === 英国 ===
+    'uk_passport': '护照有效期须在预计离英后至少6个月，至少2页空白。如持有旧护照(含签证记录)建议一并提交。',
+    'uk_bank': '近6个月银行流水，余额建议5万人民币以上。如提供工资卡流水更好。资金来源需合理解释。',
+    'uk_photo': '白底彩色照片，45×35mm，近6个月内拍摄，脸部占比70-80%。',
+    'uk_employment': '在职证明需包含：姓名、职位、收入、入职时间、准假时间。公司英文抬头纸打印+公章。',
+    'uk_invitation': '邀请函需包含受邀人信息、行程安排、住宿安排、邀请人签名及联系方式。',
+    'uk_business_lic': '营业执照副本复印件加盖公章，附英文翻译件。',
+
+    // === 法国/申根 ===
+    'fra_passport': '护照有效期须在计划离境申根区后至少3个月，至少2页空白。签发不超过10年。',
+    'fra_bank': '近3-6个月流水，余额建议5万人民币以上。流水稳定最佳，大额存入需提供资金来源说明。',
+    'fra_photo': '白底彩色照片，35×45mm，近6个月内，脸部占比60-70%，不可戴美瞳。',
+    'fra_employment': '公司抬头纸打印，需包含姓名、职位、收入、入职日期、准假说明、费用承担方。英文+盖章。',
+    'fra_invitation': '邀请函需经当地市政府认证（Attestation d\'accueil），含邀请人身份信息及住宿证明。',
+    'fra_business_lic': '营业执照副本+英文翻译件，加盖公章。',
+    'fra_insurance': '申根签证强制要求：保额≥3万欧元，覆盖全部申根停留天数。推荐安联/平安申根保险。',
+
+    // === 意大利 ===
+    'ita_passport': '护照有效期须在计划离境申根后至少3个月。至少2页空白。',
+    'ita_bank': '近3-6个月流水，余额建议5万人民币以上。信用卡对账单可作为辅助。',
+    'ita_photo': '白底彩照35×45mm，近6个月内，露耳。',
+
+    // === 德国 ===
+    'deu_passport': '护照有效期须在计划离境后至少3个月，至少2页空白。',
+    'deu_bank': '近3个月银行流水，余额建议5万人民币以上。使馆可能要求冻结3万人民币存款。',
+    'deu_photo': '白底彩照35×45mm，近6个月内，不可戴头饰。',
+
+    // === 日本 ===
+    'japan_passport': '护照有效期须在预计离日后至少6个月。至少2页空白签证页。',
+    'japan_bank': '近6个月流水，单次签余额建议10万人民币以上，三年签建议20万以上，五年签建议50万以上。',
+    'japan_photo': '白底彩照45×45mm（正方形），近6个月内，露耳。',
+    'japan_employment': '在职证明需注明年收入。单次签建议年收10万+，三年签建议20万+，五年签建议50万+。',
+
+    // === 韩国 ===
+    'korea_passport': '护照有效期须在预计离日后至少6个月。',
+    'korea_bank': '近6个月流水，余额建议5万人民币以上。',
+    'korea_photo': '白底彩照35×45mm，近6个月内。',
+
+    // === 澳大利亚 ===
+    'australia_passport': '护照有效期须在预计离澳后至少6个月。',
+    'australia_bank': '近3-6个月流水，余额建议5万人民币以上。提供存款证明更佳。',
+    'australia_photo': '白底彩照35×45mm，近6个月内。',
+
+    // === 加拿大 ===
+    'canada_passport': '护照有效期须在预计离加后至少6个月。',
+    'canada_bank': '近4-6个月流水，余额建议10万人民币以上。提供资产证明有助于出签。',
+    'canada_photo': '白底彩照35×45mm，近6个月内。',
+
+    // === 新加坡 ===
+    'singapore_passport': '护照有效期须在预计离新后至少6个月。',
+    'singapore_bank': '近3个月流水，余额建议3万人民币以上。',
+    'singapore_photo': '白底彩照35×45mm，近6个月内。',
+
+    // === 泰国 ===
+    'thailand_passport': '护照有效期须在预计离泰后至少6个月。（中国公民免签30天）',
+    'thailand_photo': '白底彩照35×45mm，近6个月内。',
+
+    // === 越南 ===
+    'vietnam_passport': '护照有效期须在预计离越后至少6个月。',
+    'vietnam_photo': '白底彩照35×45mm，近6个月内。',
+
+    // === 马来西亚 ===
+    'malaysia_passport': '护照有效期须在预计离马后至少6个月。',
+    'malaysia_photo': '白底彩照35×45mm，近6个月内。',
+  };
+
   return {
     COUNTRIES,
     VISA_TYPES_BASE,
@@ -2716,6 +2808,7 @@ const VISAPILOT = (function() {
     FAQ_DATA,
     CITY_DATA,
     INSURANCE_PROVIDERS,
+    MATERIAL_COUNTRY_DETAILS,
   };
 })();
 
@@ -5356,6 +5449,7 @@ const VPUI = (function() {
               const reqLabel = m.required === true ? '必交' : m.required === 'conditional' ? '视情况' : '可选';
               const user = VPAuth.currentUser();
               const canView = !user && m.required === true ? false : true;
+              const matNote = VISAPILOT.MATERIAL_COUNTRY_DETAILS ? (VISAPILOT.MATERIAL_COUNTRY_DETAILS[countryId + '_' + m.id] || m.note || '') : (m.note || '');
               return `
                 <div class="vp-material-item">
                   <label class="vp-checkbox ${_ckGet(countryId, visaType, m.id) ? 'vp-checked' : ''}">
@@ -5363,7 +5457,7 @@ const VPUI = (function() {
                     <span>${canView ? m.name : '🔒 注册会员可见'}</span>
                   </label>
                   <span class="vp-material-required ${m.required === true ? 'vp-required' : ''}">${canView ? reqLabel : '🔒'}</span>
-                  ${canView && m.note ? `<span class="vp-text-muted vp-material-note">${m.note}</span>` : ''}
+                  ${canView && matNote ? `<span class="vp-text-muted vp-material-note">${matNote}</span>` : ''}
                 </div>
               `;
             }).join('')}
