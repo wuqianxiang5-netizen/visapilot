@@ -333,6 +333,7 @@ const VPUI = (function() {
     `;
 
     renderSidebar();
+    reorderVisaDetailLayout();
   }
 
   function renderVisaDetail(countryId, visaType) {
@@ -346,8 +347,13 @@ const VPUI = (function() {
     const feeStr = typeof fee === 'number' ? `¥${fee}` : fee;
 
     return `
-      <div class="vp-visa-overview">
-        <!-- 签证概览卡 -->
+<!-- 大使馆链接 -->
+        <div class="vp-section">
+          <h3>🔗 大使馆官方链接</h3>
+          <a href="https://www.google.com/search?q=${encodeURIComponent(config.name+' 大使馆 签证')}" target="_blank" class="vp-btn vp-btn-outline">访问 ${config.name} 大使馆官网</a>
+        </div>
+
+<!-- 签证概览卡 -->
         <div class="vp-overview-card">
           <h3>📋 签证概览</h3>
           <div class="vp-overview-grid">
@@ -359,7 +365,23 @@ const VPUI = (function() {
           </div>
         </div>
 
-        <!-- 材料清单 -->
+<!-- 办理流程 -->
+        <div class="vp-section">
+          <h3>📋 办理流程</h3>
+          <div class="vp-process-steps">
+            ${VISAPILOT.PROCESS_STEPS.map(s => `
+              <div class="vp-process-step">
+                <div class="vp-step-number">${s.step}</div>
+                <div class="vp-step-content">
+                  <h4>${s.title}</h4>
+                  <p>${s.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+<!-- 材料清单 -->
         <div class="vp-section">
           <h3>📋 材料清单</h3>
           <div class="vp-materials-list">
@@ -382,23 +404,7 @@ const VPUI = (function() {
           ${!VPAuth.currentUser() ? '<p class="vp-login-prompt"><a href="#" onclick="VPApp.showLogin();return false">🔐 登录/注册</a> 查看完整的材料清单和办理流程</p>' : ''}
         </div>
 
-        <!-- 办理流程 -->
-        <div class="vp-section">
-          <h3>📋 办理流程</h3>
-          <div class="vp-process-steps">
-            ${VISAPILOT.PROCESS_STEPS.map(s => `
-              <div class="vp-process-step">
-                <div class="vp-step-number">${s.step}</div>
-                <div class="vp-step-content">
-                  <h4>${s.title}</h4>
-                  <p>${s.desc}</p>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-
-        <!-- 签证中心 -->
+<!-- 签证中心 -->
         <div class="vp-section">
           <h3>📍 签证中心</h3>
           <div class="vp-center-list">
@@ -411,14 +417,13 @@ const VPUI = (function() {
             `).join('')}
           </div>
         </div>
+          <div class="vp-center-selector" style="margin:12px 0">
+            <label>选择签证中心：</label>
+            <select class="vp-select" id="vp-center-select" onchange="VPCalendar.init('${countryId}','${visaType}')">
+              ${config.centers.map(c => `<option value="${c.city}">${c.city}</option>`).join('')}
+            </select>
 
-        <!-- 大使馆链接 -->
-        <div class="vp-section">
-          <h3>🔗 大使馆官方链接</h3>
-          <a href="https://www.google.com/search?q=${encodeURIComponent(config.name+' 大使馆 签证')}" target="_blank" class="vp-btn vp-btn-outline">访问 ${config.name} 大使馆官网</a>
-        </div>
-
-        <!-- 预约时间区域 -->
+<!-- 预约时间区域 -->
         <div class="vp-section" id="vp-calendar-section">
           <h3>📅 预约时间</h3>
           <div class="vp-appointment-info">
@@ -430,11 +435,6 @@ const VPUI = (function() {
             </div>
           </div>
           <div id="vp-wait-time"></div>
-          <div class="vp-center-selector" style="margin:12px 0">
-            <label>选择签证中心：</label>
-            <select class="vp-select" id="vp-center-select" onchange="VPCalendar.init('${countryId}','${visaType}')">
-              ${config.centers.map(c => `<option value="${c.city}">${c.city}</option>`).join('')}
-            </select>
           </div>
           <div class="vp-calendar-two-col">
             <div class="vp-cal-col-left">
@@ -467,8 +467,7 @@ const VPUI = (function() {
         <div class="vp-section" style="text-align:center;padding:20px;background:var(--bg-muted);border-radius:12px">
           <p>还有疑问？<a href="#" onclick="VPChat.toggleAIChat();return false">💬 咨询智能助手</a> 或 <a href="#" onclick="VPApp.showConsultForm();return false">📝 提交咨询表单</a></p>
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
   // ========= 申根专区 =========
@@ -1013,8 +1012,48 @@ const VPUI = (function() {
   
 
 
+
+  // ========= Reorder visa detail page layout =========
+  function reorderVisaDetailLayout() {
+    var overview = document.querySelector('.vp-visa-overview');
+    if (!overview) return;
+    var embassy, overviewCard, matSection, procSection, centerSection;
+    
+    Array.from(overview.children).forEach(function(el) {
+      var html = el.innerHTML || '';
+      if (html.indexOf('大使馆') >= 0) embassy = el;
+      else if (html.indexOf('签证概览') >= 0) overviewCard = el;
+      else if (html.indexOf('材料清单') >= 0) matSection = el;
+      else if (html.indexOf('办理流程') >= 0) procSection = el;
+      else if (html.indexOf('签证中心') >= 0) centerSection = el;
+    });
+    
+    var centerSelector = document.querySelector('.vp-center-selector');
+    if (centerSelector && centerSelector.parentNode) {
+      centerSelector.parentNode.removeChild(centerSelector);
+    }
+    
+    if (embassy && overviewCard && embassy.parentNode === overview) {
+      overview.insertBefore(embassy, overviewCard);
+    }
+    if (matSection && procSection && matSection.parentNode === overview && matSection.nextSibling === procSection) {
+      overview.insertBefore(procSection, matSection);
+    } else if (matSection && procSection && matSection.parentNode === overview && procSection.nextSibling === matSection) {
+      // Already in correct order
+    } else if (matSection && procSection && matSection.parentNode === overview) {
+      overview.insertBefore(matSection, procSection.nextSibling);
+    }
+    if (centerSelector && centerSection) {
+      centerSection.appendChild(centerSelector);
+    }
+    if (centerSelector && centerSection && !centerSection.contains(centerSelector)) {
+      centerSection.appendChild(centerSelector);
+    }
+  }
+  
   return {
     renderHome, renderSidebar, renderCountryDetail,
+    reorderVisaDetailLayout,
     handleMatToggle: _ckToggle,
     matChecked: _ckGet,
     _aptInfo, getEnhancedValidity, getEnhancedStay,
