@@ -79,9 +79,38 @@ const VPUI = (function() {
     main.innerHTML = `
       <div class="vp-home">
         <div class="vp-home-hero">
-          <h1>VisaPilot <span class="vp-text-muted">全球签证 · 智能指南</span></h1>
-          <p>覆盖 ${VISAPILOT.COUNTRIES.length} 个国家/地区 · ${Object.keys(VISAPILOT.VISA_CONFIG).reduce((a,c) => a + VISAPILOT.VISA_CONFIG[c].types.length, 0)} 种签证类型 · 29 国申根区</p>
-          <div class="vp-home-search">
+          <div class="vp-hero">
+            <div class="vp-hero-content">
+              <div class="vp-hero-logo">VisaPilot<span class="vp-hero-dot">.</span></div>
+              <div class="vp-hero-subtitle">您身边的签证官 — 全球签证一站办理</div>
+              <div class="vp-hero-desc">覆盖 ${VISAPILOT.COUNTRIES.length}+ 国家、${Object.keys(VISAPILOT.VISA_CONFIG).reduce((a,c) => a + VISAPILOT.VISA_CONFIG[c].types.length, 0)}+ 签证类型。智能材料清单、在线预约、专业代办。</div>
+              <div class="vp-hero-btns">
+                <a href="#" class="vp-hero-btn-primary" onclick="VPApp.navigateToCountry('usa');return false">立即查询签证</a>
+                <a href="#" class="vp-hero-btn-secondary" onclick="VPApp.showRegister();return false">注册会员</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="vp-hero-stats">
+            <div class="vp-hero-stat-card">
+              <div class="vp-hero-stat-num">${VISAPILOT.COUNTRIES.length}+</div>
+              <div class="vp-hero-stat-label">覆盖国家</div>
+            </div>
+            <div class="vp-hero-stat-card">
+              <div class="vp-hero-stat-num">${Object.keys(VISAPILOT.VISA_CONFIG).reduce((a,c) => a + VISAPILOT.VISA_CONFIG[c].types.length, 0)}+</div>
+              <div class="vp-hero-stat-label">签证类型</div>
+            </div>
+            <div class="vp-hero-stat-card">
+              <div class="vp-hero-stat-num">29</div>
+              <div class="vp-hero-stat-label">申根国家</div>
+            </div>
+            <div class="vp-hero-stat-card">
+              <div class="vp-hero-stat-num">24/7</div>
+              <div class="vp-hero-stat-label">智能咨询</div>
+            </div>
+          </div>
+
+          <div class="vp-home-search" style="margin-top:24px">
             <input type="text" class="vp-input vp-input-lg" id="vp-global-search" placeholder="🔍 搜索国家（中/英文）..." oninput="VPUI.searchCountry(this.value)">
             <div id="vp-search-results" class="vp-search-results"></div>
           </div>

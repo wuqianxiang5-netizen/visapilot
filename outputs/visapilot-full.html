@@ -1950,6 +1950,103 @@ a:hover { text-decoration: underline; }
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== Hero 新设计 ===== */
+.vp-hero {
+  background: linear-gradient(135deg, #1a1f2e 0%, #1e3a5f 50%, #1a3a6e 100%);
+  border-radius: 24px;
+  padding: 60px 50px 80px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.vp-hero::before {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.vp-hero::after {
+  content: '';
+  position: absolute; bottom: -60px; right: 100px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.vp-hero-content { position: relative; z-index: 1; }
+.vp-hero-logo {
+  font-size: 52px; font-weight: 800;
+  letter-spacing: -1px; margin-bottom: 8px;
+  line-height: 1.1;
+}
+.vp-hero-dot { color: #f59e0b; font-size: 48px; }
+.vp-hero-subtitle {
+  font-size: 24px; font-weight: 600;
+  color: #e5e7eb; margin-bottom: 12px;
+}
+.vp-hero-desc {
+  font-size: 15px; color: #9ca3af;
+  line-height: 1.6; margin-bottom: 28px; max-width: 600px;
+}
+.vp-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.vp-hero-btn-primary, .vp-hero-btn-secondary {
+  display: inline-flex; align-items: center;
+  padding: 13px 32px; border-radius: 10px;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s;
+}
+.vp-hero-btn-primary {
+  background: #2563eb; color: white;
+  border: none;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+}
+.vp-hero-btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); text-decoration: none; color: white; }
+.vp-hero-btn-secondary {
+  background: transparent; color: white;
+  border: 1.5px solid rgba(255,255,255,0.3);
+}
+.vp-hero-btn-secondary:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); text-decoration: none; color: white; }
+
+/* ===== Hero 统计卡片 ===== */
+.vp-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.vp-hero-stat-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 28px 16px;
+  text-align: center;
+  transition: all 0.2s;
+}
+.vp-hero-stat-card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+.vp-hero-stat-num {
+  font-size: 32px; font-weight: 800;
+  color: #2563eb; margin-bottom: 6px;
+}
+.vp-hero-stat-label {
+  font-size: 13px; color: #6b7280; font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .vp-hero { padding: 40px 24px 50px; }
+  .vp-hero-logo { font-size: 36px; }
+  .vp-hero-dot { font-size: 32px; }
+  .vp-hero-subtitle { font-size: 18px; }
+  .vp-hero-desc { font-size: 14px; }
+  .vp-hero-btns { flex-direction: column; }
+  .vp-hero-btn-primary, .vp-hero-btn-secondary { width: 100%; justify-content: center; }
+  .vp-hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .vp-hero-stat-num { font-size: 28px; }
+}
 </style>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛂</text></svg>">
 </head>
@@ -3388,6 +3485,14 @@ const VPDIY = (function() {
   function uploadMaterial(countryId, visaType, materialId, file, onComplete) {
     const user = VPAuth.currentUser();
     if (!user) { VPApp.showToast('请先登录','warning'); return; }
+    
+    // 验证文件格式
+    var allowedExts = ['jpg','jpeg','png','gif','pdf','doc','docx','xls','xlsx'];
+    var ext = file.name ? file.name.split('.').pop().toLowerCase() : '';
+    if (!allowedExts.includes(ext)) {
+      VPApp.showToast('不支持的文件格式，请上传 JPG/PNG/PDF/Word/Excel','warning');
+      return;
+    }
 
     var maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
@@ -3830,7 +3935,7 @@ const VPDIY = (function() {
         <div class="vp-insurance-upload" style="margin-top:12px">
           <label class="vp-btn vp-btn-sm vp-btn-outline">
             📤 上传自己的保险文件
-            <input type="file" accept=".jpg,.jpeg,.png,.pdf" style="display:none" onchange="VPDIY.uploadInsurance(this)">
+            <input type="file" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx" style="display:none" onchange="VPDIY.uploadInsurance(this)">
           </label>
           <span id="vp-insurance-file-status"></span>
         </div>
@@ -3880,7 +3985,7 @@ const VPDIY = (function() {
         <div class="vp-translation-upload" style="margin-top:12px">
           <label class="vp-btn vp-btn-sm vp-btn-outline">
             📤 上传中文文件（JPG/PNG/PDF）
-            <input type="file" accept=".jpg,.jpeg,.png,.pdf" style="display:none" onchange="VPDIY.translateFile(this)">
+            <input type="file" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx" style="display:none" onchange="VPDIY.translateFile(this)">
           </label>
           <button class="vp-btn vp-btn-sm vp-btn-primary" onclick="VPDIY.toggleTranslation()" style="margin-left:8px">🔄 原文/译文切换</button>
         </div>
@@ -4884,9 +4989,38 @@ const VPUI = (function() {
     main.innerHTML = `
       <div class="vp-home">
         <div class="vp-home-hero">
-          <h1>VisaPilot <span class="vp-text-muted">全球签证 · 智能指南</span></h1>
-          <p>覆盖 ${VISAPILOT.COUNTRIES.length} 个国家/地区 · ${Object.keys(VISAPILOT.VISA_CONFIG).reduce((a,c) => a + VISAPILOT.VISA_CONFIG[c].types.length, 0)} 种签证类型 · 29 国申根区</p>
-          <div class="vp-home-search">
+          <div class="vp-hero">
+            <div class="vp-hero-content">
+              <div class="vp-hero-logo">VisaPilot<span class="vp-hero-dot">.</span></div>
+              <div class="vp-hero-subtitle">您身边的签证官 — 全球签证一站办理</div>
+              <div class="vp-hero-desc">覆盖 ${VISAPILOT.COUNTRIES.length}+ 国家、${Object.keys(VISAPILOT.VISA_CONFIG).reduce((a,c) => a + VISAPILOT.VISA_CONFIG[c].types.length, 0)}+ 签证类型。智能材料清单、在线预约、专业代办。</div>
+              <div class="vp-hero-btns">
+                <a href="#" class="vp-hero-btn-primary" onclick="VPApp.navigateToCountry('usa');return false">立即查询签证</a>
+                <a href="#" class="vp-hero-btn-secondary" onclick="VPApp.showRegister();return false">注册会员</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="vp-hero-stats">
+            <div class="vp-hero-stat-card">
+              <div class="vp-hero-stat-num">${VISAPILOT.COUNTRIES.length}+</div>
+              <div class="vp-hero-stat-label">覆盖国家</div>
+            </div>
+            <div class="vp-hero-stat-card">
+              <div class="vp-hero-stat-num">${Object.keys(VISAPILOT.VISA_CONFIG).reduce((a,c) => a + VISAPILOT.VISA_CONFIG[c].types.length, 0)}+</div>
+              <div class="vp-hero-stat-label">签证类型</div>
+            </div>
+            <div class="vp-hero-stat-card">
+              <div class="vp-hero-stat-num">29</div>
+              <div class="vp-hero-stat-label">申根国家</div>
+            </div>
+            <div class="vp-hero-stat-card">
+              <div class="vp-hero-stat-num">24/7</div>
+              <div class="vp-hero-stat-label">智能咨询</div>
+            </div>
+          </div>
+
+          <div class="vp-home-search" style="margin-top:24px">
             <input type="text" class="vp-input vp-input-lg" id="vp-global-search" placeholder="🔍 搜索国家（中/英文）..." oninput="VPUI.searchCountry(this.value)">
             <div id="vp-search-results" class="vp-search-results"></div>
           </div>
