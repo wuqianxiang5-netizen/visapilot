@@ -973,7 +973,7 @@ const VPUI = (function() {
       '<div class="vp-overview-item"><span>Stay</span><strong>' + getEnhancedStay('schengen', visaType) + '</strong></div>' +
       '</div></div>';
     
-    html += '<div class="vp-section"><h3>Materials</h3><div class="vp-materials-list">';
+    html += '<div class="vp-section"><h3>Materials</h3><div class="vp-materials-list vp-materials-list-sm">';
     
     for (var i2 = 0; i2 < tmpl.length; i2++) {
       var m = tmpl[i2];
